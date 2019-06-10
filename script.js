@@ -2,7 +2,6 @@ const ctx = document.getElementById('1').getContext('2d');
 let minSize = 0;
 let maxSize = 0;
 let speed = 0;
-let fade = 0;
 
 ctx.imageSmoothingEnabled = true;
 document.body.onresize = resizeCanvas;
@@ -20,7 +19,6 @@ function updateValues() {
     minSize = getValue('minSize');
     maxSize = getValue('maxSize');
     speed = getValue('speed');
-    fade = getValue('fade');
 }
 
 function resizeCanvas() {
