@@ -104,10 +104,5 @@ function animate() {
     }
 
     points.forEach(p => drawCircle(p));
-
-    ctx.fillStyle = '#ffffff' + decToHex(fade);
-    ctx.beginPath();
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
     requestAnimationFrame(animate);
 }
