@@ -2,11 +2,15 @@ const ctx = document.getElementById('1').getContext('2d');
 let minSize = 0;
 let maxSize = 0;
 let speed = 0;
+let fadeOut = 1;
+let frame = 0;
 
 ctx.imageSmoothingEnabled = true;
 document.body.onresize = resizeCanvas;
+clearCanvas();
 resizeCanvas();
 
+updateValues();
 let start = getRandomParams();
 let next = start;
 let stepsLeft = 0;
@@ -19,12 +23,14 @@ function updateValues() {
     minSize = getValue('minSize');
     maxSize = getValue('maxSize');
     speed = getValue('speed');
+    fadeOut = getValue('fadeOut');
 }
 
 function resizeCanvas() {
     const image = getCanvasImage();
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
+    clearCanvas();
     ctx.putImageData(image, 0, 0);
 }
 
@@ -88,6 +94,12 @@ function drawCircle(params) {
     ctx.fill();
 }
 
+function clearCanvas() {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0,0,ctx.canvas.width, ctx.canvas.height);
+}
+
+
 function animate() {
     updateValues();
 
@@ -103,6 +115,22 @@ function animate() {
         stepsLeft--;
     }
 
+    if (fadeOut && frame++ % (10 - fadeOut) === 0)
+        applyFilter();
+
     points.forEach(p => drawCircle(p));
     requestAnimationFrame(animate);
+}
+
+function applyFilter() {
+    const image = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+    clearCanvas();
+    ctx.putImageData(lighter(image), 0, 0);
+}
+
+function lighter(imageData) {
+    for (let i = 0; i < imageData.data.length; i++) {
+        imageData.data[i]++;
+    }
+    return imageData;
 }
